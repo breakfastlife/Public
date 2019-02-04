@@ -1,3 +1,7 @@
+//Bryce Ellard (013202420) 
+//completion time: 1/29/2019 4:30 pm
+//collaborators: Madison clark-tito, Matthew bahloul
+
 #ifndef CSV_READER_H
 #define CSV_READER_H
 
@@ -5,6 +9,9 @@
 #include <string>
 #include <fstream>
 #include <sstream>
+
+#include "searchLine.h" //added two over loaded search functions to search as the file gets processed
+
 using namespace std;
 
 class CsvStateMachine;
@@ -173,8 +180,9 @@ public:
 
 	//this function drives the underlying state machine and 
 	//produces the final 2D table of CSV data
-	vector<vector<string>> processFile()
+	vector<vector<string>> processFile(string state_input, string cause_input, string year_input)
 	{
+		int deathNum(0); //added to keep track of number of deaths
 		getline(_csv_stream, _current_line);
 		while (_csv_stream.good() == true || _current_line.length() > 0)
 		{
@@ -198,12 +206,52 @@ public:
 						_current_row.push_back("");
 					}
 
+					//add search function ****************************************************
+					
+					if (year_input == "all years" && state_input == "all states" && cause_input == "all causes")
+					{
+						search3(_current_row, deathNum);
+					}
+					if (year_input == "all years" && state_input == "all states" && cause_input != "all causes")
+					{
+						search1(cause_input, _current_row, deathNum);
+					}
+					if (year_input == "all years" && cause_input == "all causes" && state_input != "all states")
+					{
+						search1(state_input, _current_row, deathNum);
+					}
+					if (state_input == "all states" && cause_input == "all causes" && year_input != "all years")
+					{
+						search1(year_input, _current_row, deathNum);
+					}
+					if (year_input == "all years" && state_input != "all states" && cause_input != "all causes")
+					{
+						search2(state_input, cause_input, _current_row, deathNum);
+					}
+					if (cause_input == "all causes" && year_input != "all years" && state_input != "all states")
+					{
+						search2(year_input, state_input, _current_row, deathNum);
+					}
+					if (state_input == "all states" && cause_input != "all causes" && year_input != "all years")
+					{
+						search2(year_input, cause_input, _current_row, deathNum);
+					}
+					if (year_input != "all years" && state_input != "all states" && cause_input != "all causes")
+					{
+						search4(state_input, cause_input, year_input, _current_row, deathNum);
+					}
+
+					
+
 					//we are done with row, so add row to table, reset row
 					//and grab a new line
 					_table.push_back(_current_row);
 					_current_row = vector<string>{};
 					_current_line_position = 0;
 					getline(_csv_stream, _current_line);
+
+					
+
 					
 					//account for EOF
 					if (_csv_stream.good() == false)
@@ -216,13 +264,19 @@ public:
 			//make state machine do work
 			_current_state->handle();
 		}
-
+		cout << deathNum << endl;
 		return _table;
 	}
+
 
 	vector<vector<string>> getTable()
 	{
 		return _table;
+	}
+	
+	string search(string state, string cause, string year)
+	{
+		return _current_line;
 	}
 };
 
@@ -283,5 +337,6 @@ void EndState::handle()
 {
 
 }
+
 
 #endif // !CSV_READER_H

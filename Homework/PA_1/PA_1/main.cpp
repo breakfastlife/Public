@@ -1,25 +1,25 @@
-// Bryce Ellard
-// CS 211
-// 1/29/2019
-// PA 1
-
 #include <iostream>
 #include <vector>
 #include <string>
+#include <fstream>
+#include <sstream>
 #include "CsvReader.h"
 
 using namespace std;
 
+void search(string year, string state, string cause, int &num, vector<vector<string>> file);
+
+
 int main()
 {
+	CsvStateMachine deathStuff( "death_rates.csv" );
+	deathStuff.processFile();
 
-	
-	
-	
+
 	int yearDeath{ 0 };
 	string queryAnswer("Y");
 	do {
-		CsvStateMachine deathStats{ "death_rates.csv" };
+		int total(0);
 		string stateSearch, searchCause, yearSearch;
 		cout << "****Death Rate Data Analysis ****\n";
 		cout << "Enter State (-1 for all states): ";
@@ -36,19 +36,39 @@ int main()
 		getline(cin, yearSearch);
 		if (yearSearch == "-1")
 			yearSearch = "all years";
-		//cin.ignore();
-		//cout << deathStats.search(stateSearch, searchCause, yearSearch);
+		
+		search(yearSearch, stateSearch, searchCause, total, deathStuff.getTable());
 
 		cout << "\n\nTotal deaths in " << stateSearch << " from ";
-		cout << searchCause << " in " << yearSearch << ": ";
-		deathStats.processFile(stateSearch, searchCause, yearSearch);
+		cout << searchCause << " in " << yearSearch << ": " << total;
 
 		cout << "\n\nWould you like to run another query (Y/N)?";
 		getline(cin, queryAnswer);
-		
+
 	} while (queryAnswer == "y" || queryAnswer == "Y");
 
-	
 
 	return 0;
+}
+
+void search(string year, string state, string cause, int &num, vector<vector<string>> file)
+{
+	for (auto row : file)
+	{
+		if (row[2] == state || state == "all states")
+		{
+			if (row[1] == cause || cause == "all causes")
+			{
+				if (row[0] == year || year == "all years")
+				{
+					string search;
+					search = row[3];
+					stringstream intString(search);
+					int intString_input;
+					intString >> intString_input;
+					num += intString_input;
+				}
+			}
+		}
+	}
 }

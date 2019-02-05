@@ -122,7 +122,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CsvReader.h" />
-    <ClInclude Include="searchLine.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />

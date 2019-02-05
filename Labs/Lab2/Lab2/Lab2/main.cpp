@@ -11,14 +11,14 @@ using namespace std;
 vector<string> readFile(ifstream& some_file);
 vector<string> readFile(ifstream&& some_file);
 vector<string> readFile(string file_name);
-void header_remover(vector<string> vec_out, vector<string> vec_in);
+//void header_remover(vector<string> vec_out, vector<string> vec_in);
 
 int main()
 {
 	vector<string> ppm_vec = readFile("bunny.ppm");
 	vector<string> new_vec, vec_o;
 
-	//header_remover(vec_o, ppm_vec);
+	
 	ofstream stream("bunny_modified.ppm");
 	stream << "P3" << endl;
 	stream << "400 273" << endl;
@@ -78,10 +78,10 @@ vector<string> readFile(string file_name)
 	return readFile(ifstream{ file_name });
 }
 
-void header_remover(vector<string> vec_out, vector<string> vec_in)
+/*void header_remover(vector<string> vec_out, vector<string> vec_in)
 {
 	for (int k = 0; k < 3; k++)
 	{
 		vec_out = StringSplitter::split(vec_in[k], " ");
 	}
-}
+}*/

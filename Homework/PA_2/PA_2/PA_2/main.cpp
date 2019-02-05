@@ -15,20 +15,14 @@ vector<string> readFile(string file_name);
 
 int main()
 {
-	string file_input, file_dest;
-	cout << "Enter a PPM file to parse: ";
-	cin >> file_input;
-	vector<string> ppm_vec = readFile(file_input);
+	vector<string> ppm_vec = readFile("bunny.ppm");
 	vector<string> new_vec, vec_o;
 
-	cout << endl << "Enter destination file: ";
-	cin >> file_dest;
-	ofstream stream(file_dest);
+	
+	ofstream stream("bunny_modified.ppm");
 	stream << "P3" << endl;
 	stream << "400 273" << endl;
 	stream << "255" << endl;
-
-	cout << "parsing..." << endl;
 
 	for (int i = 3; i < ppm_vec.size(); i++)
 	{
@@ -37,18 +31,16 @@ int main()
 		{
 			new_vec[i] = "0";
 		}
-		
+
 		for (auto row : new_vec)
 		{
 			stream << row << " ";
-			//cout << row << " ";
+			cout << row << " ";
 		}
-		//cout << endl;
+		cout << endl;
 		stream << endl;
 	}
 	stream.close();
-
-	cout << "Processing image complete..." << endl;
 	return 0;
 }
 

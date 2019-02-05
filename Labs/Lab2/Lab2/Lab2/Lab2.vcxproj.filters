@@ -23,6 +23,9 @@
     <None Include="bunny.ppm">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="bunny_modified.ppm">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stringSplitter.h">

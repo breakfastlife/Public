@@ -122,6 +122,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="bunny.ppm" />
+    <None Include="bunny_modified.ppm" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stringSplitter.h" />

@@ -1,3 +1,6 @@
+//Bryce Ellard
+//colaborators: Jacob Castro, Madison Clark-Tito, Matthew Bahloul
+
 #include <iostream>
 #include <vector>
 #include <string>

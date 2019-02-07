@@ -18,6 +18,7 @@ private:
 	string red;
 	string green;
 	string blue;
+	int size;
 
 public:
 	//RGB();
@@ -27,9 +28,11 @@ public:
 	const string getRed() const;
 	const string getBlue() const;
 	const string getGreen() const;
+	const int getSize() const;
 	void setRed(int color);
 	void setBlue(int color);
 	void setGreen(int color);
+	void setSize(int number);
 };
 
 RGB::RGB(int option, string file_in, string file_out)
@@ -37,9 +40,9 @@ RGB::RGB(int option, string file_in, string file_out)
 	setRed(0);
 	setBlue(0);
 	setGreen(0);
-	int h(0);
+	int h(0), num(0);
 	vector<string> ppm_vec = readFile(file_in);
-	vector<string> new_vec, vec_o;
+	vector<string> new_vec, vec_o, temp_vec;
 
 
 	ofstream stream(file_out);
@@ -162,32 +165,23 @@ RGB::RGB(int option, string file_in, string file_out)
 	case 7:
 		//random noise
 		srand(time(NULL));
-		h = (rand()% 20 + 1) - 10;
+		h = ((rand()% 20 + 1) - 10);
 		for (int i = 3; i < ppm_vec.size(); i++)
 		{
 			new_vec = StringSplitter::split(ppm_vec[i], " ");
 			for (int i = 0; i < new_vec.size() -1; i += 3)
 			{
-				if (stoi(new_vec[i]) + h > 0)
-					setRed(255 - stoi(new_vec[i]));
-				if (stoi(new_vec[i]) + h <= 0)
-					setRed(0);
+				setRed((stoi(new_vec[i]) + h));
 				new_vec[i] = getRed();
 			}
 			for (int i = 1; i < new_vec.size(); i += 3)
 			{
-				if (stoi(new_vec[i]) + h > 0)
-					setGreen(255 - stoi(new_vec[i]));
-				if (stoi(new_vec[i]) + h <= 0)
-					setGreen(0);
+				setGreen((stoi(new_vec[i]) + h));
 				new_vec[i] = getGreen();
 			}
 			for (int i = 2; i < new_vec.size(); i += 3)
 			{
-				if(stoi(new_vec[i]) + h > 0)
-					setBlue(255 - stoi(new_vec[i]));
-				if (stoi(new_vec[i]) + h <= 0)
-					setBlue(0);
+				setBlue((stoi(new_vec[i]) + h));
 				new_vec[i] = getBlue();
 			}
 
@@ -215,29 +209,136 @@ RGB::RGB(int option, string file_in, string file_out)
 		break;
 	case 8:
 		//High Contrast
-		if (stoi(getRed()) > 255 / 2)
-			setRed(255);
-		if (stoi(getRed()) <= 255 / 2)
-			setRed(0);
-		if (stoi(getBlue()) > 255 / 2)
+		for (int i = 3; i < ppm_vec.size(); i++)
+		{
+			new_vec = StringSplitter::split(ppm_vec[i], " ");
+			for (int i = 0; i < new_vec.size() - 1; i += 3)
+			{
+				setRed(stoi(new_vec[i]));
+				if (stoi(getRed()) > (255 / 2))
+					setRed(255);
+				if (stoi(getRed()) <= (255 / 2))
+					setRed(0);
+				new_vec[i] = getRed();
+			}
+			for (int i = 1; i < new_vec.size(); i += 3)
+			{
+				setGreen(stoi(new_vec[i]));
+				if (stoi(getGreen()) > (255 / 2))
+					setGreen(255);
+				if (stoi(getGreen()) <= (255 / 2))
+					setGreen(0);
+				new_vec[i] = getGreen();
+			}
+			for (int i = 2; i < new_vec.size(); i += 3)
+			{
+				setBlue(stoi(new_vec[i]));
+				if (stoi(getBlue()) > (255 / 2))
+					setBlue(255);
+				if (stoi(getBlue()) <= (255 / 2))
+					setBlue(0);
+				new_vec[i] = getBlue();
+			}
+
+			for (auto row : new_vec)
+			{
+				stream << row << " ";
+			}
+			stream << endl;
+		}
+		
+		/*if (stoi(getBlue()) > 255 / 2)
 			setBlue(255);
 		if (stoi(getBlue()) <= 255 / 2)
 			setBlue(0);
 		if (stoi(getGreen()) > 255 / 2)
 			setGreen(255);
 		if (stoi(getGreen()) <= 255 / 2)
-			setGreen(0);
+			setGreen(0);*/
 		break;
 	case 9:
 		//grayscale
-		int k = ((stoi(getRed()) + stoi(getBlue()) + stoi(getGreen())) / 3);
-		setRed(k);
-		setBlue(k);
-		setGreen(k);
-		break;
-	//case 10:
-		//Flip Horizontally
+		for (int i = 3; i < ppm_vec.size(); i++)
+		{
+			new_vec = StringSplitter::split(ppm_vec[i], " ");
+			for (int i = 0; i < new_vec.size() - 1; i += 3)
+			{
+				setRed(stoi(new_vec[i]));
+				setGreen(stoi(new_vec[i + 1]));
+				setBlue(stoi(new_vec[i + 2]));
 
+				h = ((stoi(getRed()) + stoi(getBlue()) + stoi(getGreen())) / 3);
+
+				setRed(h);
+				setGreen(h);
+				setBlue(h);
+
+				new_vec[i] = getRed();
+				new_vec[i+1] = getGreen();
+				new_vec[i+2] = getBlue();
+			}
+
+			for (auto row : new_vec)
+			{
+				stream << row << " ";
+			}
+			stream << endl;
+		}
+		
+		break;
+	case 10:
+		//Flip Horizontally
+		for (int i = 3; i < ppm_vec.size(); i++)
+		{
+			
+			new_vec = StringSplitter::split(ppm_vec[i], " ");
+			temp_vec = new_vec;
+			/*for (int j = 0; j < new_vec.size(); j++)
+			{
+				setSize(j);
+			}
+
+			cout << getSize();*/
+
+			for (int i = 2; i < ((new_vec.size()-1)/2)+2; i += 3)
+			{
+				//stream << "AHHH ... ";
+				//temp_vec[i-2] = new_vec[i];
+				//stream << "AHHH ... ";
+				//temp_vec[i-1] = new_vec[i - 1];
+				//stream << "AHHH ... ";
+				//temp_vec[i] = new_vec[i - 2];
+				swap(new_vec[i], new_vec[(new_vec.size() - 1) - (i - 2)]);
+				if (i < 8)
+				{
+					swap(new_vec[i - 1], new_vec[(new_vec.size() - 1) - (i - 1)]);
+					swap(new_vec[i - 2], new_vec[(new_vec.size() - 1) - i]);
+				}
+			}
+			
+			/*for (int i = 0; i < (getSize() / 2) + 1; i += 3)
+			{
+				swap(new_vec[i], new_vec[getSize() - i-2]);
+			}
+			cout << "1";
+			for (int i = 1; i < (getSize() / 2) + 1; i += 3)
+			{
+				swap(new_vec[i], new_vec[getSize() - i-1]);
+			}
+			cout << "2";
+			for (int i = 2; i < (getSize() / 2) + 1; i += 3)
+			{
+				swap(new_vec[i], new_vec[getSize() - i]);
+			}*/
+
+
+			for (auto row : new_vec)
+			{
+				stream << row << " ";
+			}
+			stream << endl;
+		}
+		break;
 	}
 	
 
@@ -256,6 +357,10 @@ const string RGB::getGreen() const
 {
 	return green;
 }
+const int RGB::getSize() const
+{
+	return size;
+}
 void RGB::setRed(int color)
 {
 	red = to_string(color);
@@ -267,6 +372,11 @@ void RGB::setBlue(int color)
 void RGB::setGreen(int color)
 {
 	green = to_string(color);
+}
+
+void RGB::setSize(int number)
+{
+	size = number;
 }
 
 
@@ -312,4 +422,13 @@ vector<string> readFile(ifstream&& some_file)
 vector<string> readFile(string file_name)
 {
 	return readFile(ifstream{ file_name });
+}
+
+template <typename t>
+void swap(t& x, t& y)
+{
+	t temp = x;
+	x = y;
+	y = temp;
+	return;
 }

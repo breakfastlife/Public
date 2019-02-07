@@ -1,6 +1,8 @@
 //Bryce Ellard
 //colaborators: Jacob Castro, Madison Clark-Tito, Matthew Bahloul
 
+// github: https://github.com/breakfastlife/Spring2019-CS211
+
 #include <iostream>
 #include <vector>
 #include <string>

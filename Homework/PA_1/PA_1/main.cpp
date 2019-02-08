@@ -20,7 +20,7 @@ int main()
 	CsvStateMachine deathStuff( "death_rates.csv" );
 	deathStuff.processFile();
 
-
+	
 	int yearDeath{ 0 };
 	string queryAnswer("Y");
 	do {

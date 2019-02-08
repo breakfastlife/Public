@@ -15,13 +15,24 @@ using namespace std;
 int main()
 {
 	vector<string> ppm_vec = readFile("bunny.ppm");
-	vector<string> new_vec, vec_o;
-
-	
+	vector<string> new_vec, vec_o, temp_vec;
+	int len;
 	ofstream stream("bunny_modified.ppm");
-	stream << "P3" << endl;
-	stream << "400 273" << endl;
-	stream << "255" << endl;
+	for (int i = 0; i < 3; i++)
+	{
+		vec_o = StringSplitter::split(ppm_vec[i], " ");
+		for (auto row : vec_o)
+			stream << row << " ";
+	}
+	/*temp_vec = StringSplitter::split(ppm_vec[1], " ");
+	len = stoi(temp_vec[0]);
+	temp_vec = StringSplitter::split(ppm_vec[3], " ");
+	cout << len << endl;
+	cout << temp_vec.size() << endl;
+	len = ((len * 3) / (temp_vec.size()-1));
+	cout << len;
+	*/
+	
 
 	/*for (int i = 3; i < ppm_vec.size(); i++)
 	{
@@ -42,8 +53,8 @@ int main()
 	stream.close();*/
 
 	RGB bun(10, "bunny.ppm", "bunny_out.ppm");
-	cout << "done...";
-	system("pause");
+	cout << "done..." << endl;
+	//system("pause");
 	return 0;
 }
 

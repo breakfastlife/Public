@@ -314,13 +314,12 @@ RGB::RGB(int option, string file_in, string file_out)
 	
 		for (auto row : table)
 		{
-			
 			for (int w = 0; w < (row.size() / 2); w += 3)
 			{
 				//cout << row.size() << endl;
-				swap(row[w], row[(row.size() - 3) - w]);
+				swap(row[w], row[(row.size() - 1) - w]);
 				swap(row[w + 1], row[(row.size() - 2) - w]);
-				swap(row[w + 2], row[(row.size() - 1)- w]);
+				swap(row[w + 2], row[(row.size() - 3)- w]);
 			}
 			for (int q = 0; q < row.size(); q++)
 			{

@@ -47,9 +47,24 @@ RGB::RGB(int option, string file_in, string file_out)
 
 
 	ofstream stream(file_out);
-	stream << "P3" << endl;
+	/*stream << "P3" << endl;
 	stream << "300 188" << endl;
-	stream << "255" << endl;
+	stream << "255" << endl;*/
+	temp_vec = StringSplitter::split(ppm_vec[0], " ");
+	stream << temp_vec[0] << endl;
+	temp_vec = StringSplitter::split(ppm_vec[1], " ");
+	stream << temp_vec[0] << " " << temp_vec[1] << endl;
+	len = stoi(temp_vec[0]);
+	width = stoi(temp_vec[1]);
+	temp_vec = StringSplitter::split(ppm_vec[2], " ");
+	stream << temp_vec[0] << endl;
+
+	temp_vec = StringSplitter::split(ppm_vec[3], " ");
+	int pixel = temp_vec.size() / 3; // 3 coms from the RGB set up of a pixel
+	int RGB_pixel = temp_vec.size() / pixel;
+	//cout << pixel;
+
+
 	switch (option)
 	{
 	case 1:
@@ -86,7 +101,7 @@ RGB::RGB(int option, string file_in, string file_out)
 			}
 			stream << endl;
 		}
-		
+
 		break;
 	case 3:
 		//remove blue
@@ -166,11 +181,11 @@ RGB::RGB(int option, string file_in, string file_out)
 	case 7:
 		//random noise
 		srand(time(NULL));
-		h = ((rand()% 20 + 1) - 10);
+		h = ((rand() % 20 + 1) - 10);
 		for (int i = 3; i < ppm_vec.size(); i++)
 		{
 			new_vec = StringSplitter::split(ppm_vec[i], " ");
-			for (int i = 0; i < new_vec.size() -1; i += 3)
+			for (int i = 0; i < new_vec.size() - 1; i += 3)
 			{
 				setRed((stoi(new_vec[i]) + h));
 				new_vec[i] = getRed();
@@ -247,7 +262,7 @@ RGB::RGB(int option, string file_in, string file_out)
 			}
 			stream << endl;
 		}
-		
+
 		/*if (stoi(getBlue()) > 255 / 2)
 			setBlue(255);
 		if (stoi(getBlue()) <= 255 / 2)
@@ -275,8 +290,8 @@ RGB::RGB(int option, string file_in, string file_out)
 				setBlue(h);
 
 				new_vec[i] = getRed();
-				new_vec[i+1] = getGreen();
-				new_vec[i+2] = getBlue();
+				new_vec[i + 1] = getGreen();
+				new_vec[i + 2] = getBlue();
 			}
 
 			for (auto row : new_vec)
@@ -285,37 +300,40 @@ RGB::RGB(int option, string file_in, string file_out)
 			}
 			stream << endl;
 		}
-		
+
 		break;
 	case 10:
 		//Flip Horizontally
-		temp_vec = StringSplitter::split(ppm_vec[1], " ");
+		/*temp_vec = StringSplitter::split(ppm_vec[1], " ");
 		len = stoi(temp_vec[0]);
-		width = stoi(temp_vec[1]);
+		width = stoi(temp_vec[1]);*/
 		temp_vec = StringSplitter::split(ppm_vec[3], " ");
 		for (int t = 0; t < width; t++)
 		{
-//run the file through a splitter and store into a new vector then push the values of that vector 
-//into another vector but at length pixels long instead of 5
-//then move onto the next line of lenght long (the t values)
-			for (int i = 3 + (t * len/5); i < (((len * 3) / (temp_vec.size() - 1)) + (t * len/5) + 3); i++)
-			{ //t * 60 means that the original is 5 pixels long thus 5 * 60 = 300 
-				//so the (t * 60) component is for each individual line of len * 3
+			int index = (3 + (t * len / pixel));
+			int size = (((len * RGB_pixel) / (temp_vec.size() - 1)) + (t * len / pixel) + 3);
+			//cout << pixel;
+			 //t * len / pixel is how many pixel vectors per line needed
+				//so the (t * len/pixel) component is for each individual line of len * 3
+			//run the file through a splitter and store into a new vector then push the values of that vector 
+			//into another vector but at length pixels long instead of 5 (pixel)
+			//then move onto the next line of lenght long (the t values)
 
+			for (int i = index; i < size; i++)
+			{
 				new_vec = StringSplitter::split(ppm_vec[i], " ");
-
-				for (int y = 0; y < new_vec.size() -1; y++)
+				for (int y = 0; y < new_vec.size() - 1; y++)
 					vec_o.push_back(new_vec[y]);
 				//stream << endl;
 			}
 			//stream << endl;
-			cout << vec_o.size() << endl;
+			//cout << vec_o.size() << endl;
 			//vec_o.push_back("\n");
 			table.push_back(vec_o);
 			vec_o.clear();
 		}
 		cout << "Processing table\n";
-	
+
 		for (auto row : table)
 		{
 			for (int w = 0; w < (row.size() / 2); w += 3)
@@ -323,7 +341,7 @@ RGB::RGB(int option, string file_in, string file_out)
 				//cout << row.size() << endl;
 				swap(row[w], row[(row.size() - 3) - w]);
 				swap(row[w + 1], row[(row.size() - 2) - w]);
-				swap(row[w + 2], row[(row.size() - 1)- w]);
+				swap(row[w + 2], row[(row.size() - 1) - w]);
 			}
 			for (int q = 0; q < row.size(); q++)
 			{
@@ -331,7 +349,8 @@ RGB::RGB(int option, string file_in, string file_out)
 			}
 			stream << endl;
 		}
-		
+
+
 		/*for (int r = 0; r < width; r++)
 		{
 
@@ -350,116 +369,73 @@ RGB::RGB(int option, string file_in, string file_out)
 		break;
 	case 11:
 		//Flip Vertical
-		for (int i = 3; i < ppm_vec.size(); i ++)
+		temp_vec = StringSplitter::split(ppm_vec[1], " ");
+		len = stoi(temp_vec[0]);
+		width = stoi(temp_vec[1]);
+		temp_vec = StringSplitter::split(ppm_vec[3], " ");
+		for (int t = 0; t < width; t++)
 		{
-			for (int p = 0; p < 60; p++)
-			{
+			int index = 3 + (t * len / 5);
+			int size = ((len * 3) / (temp_vec.size() - 1)) + (t * len / 5) + 3;
+			//run the file through a splitter and store into a new vector then push the values of that vector 
+			//into another vector but at length pixels long instead of 5
+			//then move onto the next line of lenght long (the t values)
+			for (int i = index; i < size; i++)
+			{ //t * 60 means that the original is 5 pixels long thus 5 * 60 = 300 
+				//so the (t * 60) component is for each individual line of len * 3
+
 				new_vec = StringSplitter::split(ppm_vec[i], " ");
-				//if (i < (ppm_vec.size() - 1))
-					//temp_vec = StringSplitter::split(ppm_vec[(ppm_vec.size() - 1) - (i)], " ");
-				//temp_vec = new_vec;
-				/*for (int j = 0; j < new_vec.size(); j++)
-				{
-					setSize(j);
-				}
 
-				cout << getSize();*/
-
-				/*for (int i = 0; i < (new_vec.size()); i++)
-				{
-					swap(new_vec[i], temp_vec[i]);
-				}*/
-
-				/*for (int i = 0; i < (getSize() / 2) + 1; i += 3)
-				{
-					swap(new_vec[i], new_vec[getSize() - i-2]);
-				}
-				cout << "1";
-				for (int i = 1; i < (getSize() / 2) + 1; i += 3)
-				{
-					swap(new_vec[i], new_vec[getSize() - i-1]);
-				}
-				cout << "2";
-				for (int i = 2; i < (getSize() / 2) + 1; i += 3)
-				{
-					swap(new_vec[i], new_vec[getSize() - i]);
-				}*/
-
-
-				for (auto row : new_vec)
-				{
-					stream << row << " ";
-				}
+				for (int y = 0; y < new_vec.size() - 1; y++)
+					vec_o.push_back(new_vec[y]);
 				//stream << endl;
-				/*for (auto row : temp_vec)
-				{
-					stream << row << " ";
-				}
-				stream << endl;*/
+			}
+			//stream << endl;
+			//cout << vec_o.size() << endl;
+			//vec_o.push_back("\n");
+			table.push_back(vec_o);
+			vec_o.clear();
+		}
+		cout << "Processing table\n";
+
+		//adding a second table processor to make a secondary vector to sort through 
+		// and swap values in the table
+		for (auto new_table : table)
+		{
+			//add a second table or swap type vector function to make a new table here
+
+
+			/*for (int q = 0; q < row.size(); q++)
+			{
+
+				stream << row[q] << " ";
+			}
+			stream << endl;*/
+		}
+
+		for (auto row : table)
+		{
+			for (int w = 0; w < (row.size() / 2); w += 3)
+			{
+				//cout << row.size() << endl;
+				swap(row[w], row[(row.size() - 3) - w]);
+				swap(row[w + 1], row[(row.size() - 2) - w]);
+				swap(row[w + 2], row[(row.size() - 1) - w]);
+			}
+			for (int q = 0; q < row.size(); q++)
+			{
+				stream << row[q] << " ";
 			}
 			stream << endl;
 		}
-		/*for (int i = (ppm_vec.size()/2)+3; i < ppm_vec.size(); i++)
-		{
-
-			new_vec = StringSplitter::split(ppm_vec[i], " ");
-			if (i < (ppm_vec.size() - 1))
-				temp_vec = StringSplitter::split(ppm_vec[(ppm_vec.size() - 1) - (i)], " ");
-			//temp_vec = new_vec;
-			/*for (int j = 0; j < new_vec.size(); j++)
-			{
-				setSize(j);
-			}
-
-			cout << getSize();
-
-			for (int i = 0; i < (new_vec.size()); i++)
-			{
-				//stream << "AHHH ... ";
-				//temp_vec[i-2] = new_vec[i];
-				//stream << "AHHH ... ";
-				//temp_vec[i-1] = new_vec[i - 1];
-				//stream << "AHHH ... ";
-				//temp_vec[i] = new_vec[i - 2];
-				swap(new_vec[i], temp_vec[i]);
-				/*if (i < 8)
-				{
-					swap(new_vec[i - 1], new_vec[(new_vec.size() - 1) - (i - 1)]);
-					swap(new_vec[i - 2], new_vec[(new_vec.size() - 1) - i]);
-				}
-			}*/
-
-			/*for (int i = 0; i < (getSize() / 2) + 1; i += 3)
-			{
-				swap(new_vec[i], new_vec[getSize() - i-2]);
-			}
-			cout << "1";
-			for (int i = 1; i < (getSize() / 2) + 1; i += 3)
-			{
-				swap(new_vec[i], new_vec[getSize() - i-1]);
-			}
-			cout << "2";
-			for (int i = 2; i < (getSize() / 2) + 1; i += 3)
-			{
-				swap(new_vec[i], new_vec[getSize() - i]);
-			}
-
-
-			for (auto row : new_vec)
-			{
-				stream << row << " ";
-			}
-			stream << endl;
-			/*for (auto row : temp_vec)
-			{
-				stream << row << " ";
-			}
-			stream << endl;
-		}*/
 		break;
 
+	case 12:
+	{
+
 	}
-	
+
+	}
 
 	//stream.close();
 }

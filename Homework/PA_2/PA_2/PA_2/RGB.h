@@ -295,18 +295,22 @@ RGB::RGB(int option, string file_in, string file_out)
 		temp_vec = StringSplitter::split(ppm_vec[3], " ");
 		for (int t = 0; t < width; t++)
 		{
-			for (int i = 3 + (t * 60); i < (((len * 3) / (temp_vec.size() - 1)) + (t * 60) + 3); i++)
-			{
+//run the file through a splitter and store into a new vector then push the values of that vector 
+//into another vector but at length pixels long instead of 5
+//then move onto the next line of lenght long (the t values)
+			for (int i = 3 + (t * len/5); i < (((len * 3) / (temp_vec.size() - 1)) + (t * len/5) + 3); i++)
+			{ //t * 60 means that the original is 5 pixels long thus 5 * 60 = 300 
+				//so the (t * 60) component is for each individual line of len * 3
+
 				new_vec = StringSplitter::split(ppm_vec[i], " ");
 
-				for (int y = 0; y < new_vec.size(); y++)
-				{
+				for (int y = 0; y < new_vec.size() -1; y++)
 					vec_o.push_back(new_vec[y]);
-				}
 				//stream << endl;
 			}
 			//stream << endl;
-			vec_o.push_back("\n");
+			cout << vec_o.size() << endl;
+			//vec_o.push_back("\n");
 			table.push_back(vec_o);
 			vec_o.clear();
 		}
@@ -317,9 +321,9 @@ RGB::RGB(int option, string file_in, string file_out)
 			for (int w = 0; w < (row.size() / 2); w += 3)
 			{
 				//cout << row.size() << endl;
-				swap(row[w], row[(row.size() - 1) - w]);
+				swap(row[w], row[(row.size() - 3) - w]);
 				swap(row[w + 1], row[(row.size() - 2) - w]);
-				swap(row[w + 2], row[(row.size() - 3)- w]);
+				swap(row[w + 2], row[(row.size() - 1)- w]);
 			}
 			for (int q = 0; q < row.size(); q++)
 			{

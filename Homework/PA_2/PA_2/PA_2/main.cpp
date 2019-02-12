@@ -52,7 +52,7 @@ int main()
 	}
 	stream.close();*/
 
-	RGB bun(10, "bunny.ppm", "bunny_out.ppm");
+	RGB bun(11, "bunny.ppm", "bunny_out.ppm");
 	cout << "done..." << endl;
 	//system("pause");
 	return 0;

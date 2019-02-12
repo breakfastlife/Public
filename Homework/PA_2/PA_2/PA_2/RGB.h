@@ -60,7 +60,7 @@ RGB::RGB(int option, string file_in, string file_out)
 	stream << temp_vec[0] << endl;
 
 	temp_vec = StringSplitter::split(ppm_vec[3], " ");
-	int pixel = temp_vec.size() / 3; // 3 coms from the RGB set up of a pixel
+	int pixel = temp_vec.size() / 3; // 3 comes from the RGB set up of a pixel
 	int RGB_pixel = temp_vec.size() / pixel;
 	//cout << pixel;
 
@@ -369,23 +369,21 @@ RGB::RGB(int option, string file_in, string file_out)
 		break;
 	case 11:
 		//Flip Vertical
-		temp_vec = StringSplitter::split(ppm_vec[1], " ");
-		len = stoi(temp_vec[0]);
-		width = stoi(temp_vec[1]);
 		temp_vec = StringSplitter::split(ppm_vec[3], " ");
 		for (int t = 0; t < width; t++)
 		{
-			int index = 3 + (t * len / 5);
-			int size = ((len * 3) / (temp_vec.size() - 1)) + (t * len / 5) + 3;
+			int index = (3 + (t * len / pixel));
+			int size = (((len * RGB_pixel) / (temp_vec.size() - 1)) + (t * len / pixel) + 3);
+			//cout << pixel;
+			 //t * len / pixel is how many pixel vectors per line needed
+				//so the (t * len/pixel) component is for each individual line of len * 3
 			//run the file through a splitter and store into a new vector then push the values of that vector 
-			//into another vector but at length pixels long instead of 5
+			//into another vector but at length pixels long instead of 5 (pixel)
 			//then move onto the next line of lenght long (the t values)
+
 			for (int i = index; i < size; i++)
-			{ //t * 60 means that the original is 5 pixels long thus 5 * 60 = 300 
-				//so the (t * 60) component is for each individual line of len * 3
-
+			{
 				new_vec = StringSplitter::split(ppm_vec[i], " ");
-
 				for (int y = 0; y < new_vec.size() - 1; y++)
 					vec_o.push_back(new_vec[y]);
 				//stream << endl;
@@ -397,37 +395,39 @@ RGB::RGB(int option, string file_in, string file_out)
 			vec_o.clear();
 		}
 		cout << "Processing table\n";
-
-		//adding a second table processor to make a secondary vector to sort through 
-		// and swap values in the table
-		for (auto new_table : table)
+		for (int i = 0; i < width/2; i++)
 		{
-			//add a second table or swap type vector function to make a new table here
-
-
-			/*for (int q = 0; q < row.size(); q++)
+			for (int j = 0; j < len * 3; j += 3)
 			{
-
-				stream << row[q] << " ";
+				swap(table[i][j], table[width - i -1][j]);
+				swap(table[i][j + 1], table[width - i - 1][j + 1]);
+				swap(table[i][j + 2], table[width - i - 1][j + 2]);
 			}
-			stream << endl;*/
 		}
-
 		for (auto row : table)
 		{
-			for (int w = 0; w < (row.size() / 2); w += 3)
+			for (auto col : row)
 			{
-				//cout << row.size() << endl;
-				swap(row[w], row[(row.size() - 3) - w]);
-				swap(row[w + 1], row[(row.size() - 2) - w]);
-				swap(row[w + 2], row[(row.size() - 1) - w]);
-			}
-			for (int q = 0; q < row.size(); q++)
-			{
-				stream << row[q] << " ";
+				stream << col << " ";
 			}
 			stream << endl;
 		}
+
+		//for (auto row : table)
+		//{
+		//	for (int w = 0; w < (row.size() / 2); w += 3)
+		//	{
+		//		//cout << row.size() << endl;
+		//		swap(row[w], row[(row.size() - 3) - w]);
+		//		swap(row[w + 1], row[(row.size() - 2) - w]);
+		//		swap(row[w + 2], row[(row.size() - 1) - w]);
+		//	}
+		//	for (int q = 0; q < row.size(); q++)
+		//	{
+		//		stream << row[q] << " ";
+		//	}
+		//	stream << endl;
+		//}
 		break;
 
 	case 12:

@@ -41,7 +41,7 @@ RGB::RGB(int option, string file_in, string file_out)
 	setBlue(0);
 	setGreen(0);
 	int h(0), num(0), len(0), width(0);
-	vector<vector<string>> table;
+	vector<vector<string>> table, table_flip;
 	vector<string> ppm_vec = readFile(file_in);
 	vector<string> new_vec, vec_o, temp_vec, flip_vec;
 
@@ -53,7 +53,10 @@ RGB::RGB(int option, string file_in, string file_out)
 	temp_vec = StringSplitter::split(ppm_vec[0], " ");
 	stream << temp_vec[0] << endl;
 	temp_vec = StringSplitter::split(ppm_vec[1], " ");
-	stream << temp_vec[0] << " " << temp_vec[1] << endl;
+	if(option == 12)
+		stream << temp_vec[1] << " " << temp_vec[0] << endl;
+	else
+		stream << temp_vec[0] << " " << temp_vec[1] << endl;
 	len = stoi(temp_vec[0]);
 	width = stoi(temp_vec[1]);
 	temp_vec = StringSplitter::split(ppm_vec[2], " ");
@@ -351,21 +354,6 @@ RGB::RGB(int option, string file_in, string file_out)
 		}
 
 
-		/*for (int r = 0; r < width; r++)
-		{
-
-			flip_vec = StringSplitter::split(vec_o[r], "\n");
-			for (int e = 0; e < flip_vec.size()/2; e++)
-			{
-				swap(flip_vec[e], flip_vec[(flip_vec.size() - 1) - e]);
-			}
-			for (auto row : flip_vec)
-			{
-				stream << row << " ";
-			}
-			stream << endl;
-		}*/
-
 		break;
 	case 11:
 		//Flip Vertical
@@ -413,25 +401,74 @@ RGB::RGB(int option, string file_in, string file_out)
 			stream << endl;
 		}
 
-		//for (auto row : table)
-		//{
-		//	for (int w = 0; w < (row.size() / 2); w += 3)
-		//	{
-		//		//cout << row.size() << endl;
-		//		swap(row[w], row[(row.size() - 3) - w]);
-		//		swap(row[w + 1], row[(row.size() - 2) - w]);
-		//		swap(row[w + 2], row[(row.size() - 1) - w]);
-		//	}
-		//	for (int q = 0; q < row.size(); q++)
-		//	{
-		//		stream << row[q] << " ";
-		//	}
-		//	stream << endl;
-		//}
 		break;
 
-	case 12:
+	case 12: //Rotate 90 degrees
 	{
+		cout << "Making table\n";
+		for (int t = 0; t < width; t++)
+		{
+
+			int index = (3 + (t * len / pixel));
+			int size = (((len * RGB_pixel) / (temp_vec.size() - 1)) + (t * len / pixel) + 3);
+			//cout << pixel;
+			 //t * len / pixel is how many pixel vectors per line needed
+				//so the (t * len/pixel) component is for each individual line of len * 3
+			//run the file through a splitter and store into a new vector then push the values of that vector 
+			//into another vector but at length pixels long instead of 5 (pixel)
+			//then move onto the next line of lenght long (the t values)
+
+			for (int i = index; i < size; i++)
+			{
+				new_vec = StringSplitter::split(ppm_vec[i], " ");
+				for (int y = 0; y < new_vec.size() - 1; y++)
+					vec_o.push_back(new_vec[y]);
+				//stream << endl;
+			}
+			//stream << endl;
+			//cout << vec_o.size() << endl;
+			//vec_o.push_back("\n");
+			table.push_back(vec_o);
+			vec_o.clear();
+		}
+		cout << width << endl;
+		cout << "creating a scondary table\n";
+		/*for (int r = 0; r < width; r++)
+		{*/
+		int r = 0;
+		int u = 0;
+		while((len*3 - r - 3) != 0)
+		{
+			if (u == width)
+			{
+				u = 0;
+				r+=3;
+			}
+			//cout << r;
+			flip_vec.push_back(table[width - u - 1][len * 3 - r - 3]);
+			flip_vec.push_back(table[width - u - 1][len * 3 - r - 2]);
+			flip_vec.push_back(table[width - u - 1][len * 3 - r - 1]);
+			u++;
+		}
+		//flip_vec.push_back("\n");
+
+
+		cout << "Transfering table to output file\n";
+		/*for (int i = 0; i < width; i++)
+		{
+			for (int j = 0; j < (len * 3); j += 3)
+			{
+				swap(table[i][j], table[width - i - 1][len - j - 3]);
+				swap(table[i][j + 1], table[width - i - 1][len - j - 2]);
+				swap(table[i][j + 2], table[width - i - 1][len - j - 1]);
+			}
+		}*/
+		for (auto row : flip_vec)
+		{
+			stream << row << " ";
+		}
+
+		break;
 
 	}
 
@@ -439,6 +476,39 @@ RGB::RGB(int option, string file_in, string file_out)
 
 	//stream.close();
 }
+
+//vector<vector<int>> makeTable()
+//{
+//	vector<vector<int>> table;
+//	table.push_back(vector<int>{});
+//	int counter = 0;
+//	int row = 0;
+//	for (int i = 3; i < ppm_vec.size(); i++)
+//	{
+//		vector<string> pieces = StringSplitter::split(_ppm_in_file[i], " ");
+//		for (auto piece : pieces)
+//		{
+//			if (piece != " ")
+//			{
+//				try
+//				{
+//					table[row].push_back(stoi(piece));
+//					counter++;
+//					if (counter == _width_in * 3)
+//					{
+//						counter = 0;
+//						row++;
+//						table.push_back(vector<int>{});
+//					}
+//				}
+//				catch (...)
+//				{
+//				}
+//			}
+//		}
+//	}
+//	return table;
+//}
 
 const string RGB::getRed() const
 {
@@ -474,13 +544,6 @@ void RGB::setSize(int number)
 	size = number;
 }
 
-
-/*RGB::RGB(int red, int green, int blue)
-{
-	setRed(red);
-	setGreen(green);
-	setBlue(blue);
-}*/
 
 
 // ********* Read file stuff ****** //

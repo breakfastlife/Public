@@ -33,6 +33,10 @@ public:
 	void setBlue(int color);
 	void setGreen(int color);
 	void setSize(int number);
+	string average(string a, string b);
+	string average(string a, string b, string c);
+	string average(string a, string b, string c, string d);
+	string average(string a, string b, string c, string d, string e);
 };
 
 RGB::RGB(int option, string file_in, string file_out)
@@ -40,7 +44,7 @@ RGB::RGB(int option, string file_in, string file_out)
 	setRed(0);
 	setBlue(0);
 	setGreen(0);
-	int h(0), num(0), len(0), width(0);
+	int h(0), num(0), len(0), width(0), r(0), c(0);
 	vector<vector<string>> table, table_flip;
 	vector<string> ppm_vec = readFile(file_in);
 	vector<string> new_vec, vec_o, temp_vec, flip_vec;
@@ -383,11 +387,11 @@ RGB::RGB(int option, string file_in, string file_out)
 			vec_o.clear();
 		}
 		cout << "Processing table\n";
-		for (int i = 0; i < width/2; i++)
+		for (int i = 0; i < width / 2; i++)
 		{
 			for (int j = 0; j < len * 3; j += 3)
 			{
-				swap(table[i][j], table[width - i -1][j]);
+				swap(table[i][j], table[width - i - 1][j]);
 				swap(table[i][j + 1], table[width - i - 1][j + 1]);
 				swap(table[i][j + 2], table[width - i - 1][j + 2]);
 			}
@@ -404,7 +408,6 @@ RGB::RGB(int option, string file_in, string file_out)
 		break;
 
 	case 12: //Rotate 90 degrees
-	{
 		cout << "Making table\n";
 		for (int t = 0; t < width; t++)
 		{
@@ -432,23 +435,22 @@ RGB::RGB(int option, string file_in, string file_out)
 			vec_o.clear();
 		}
 		cout << width << endl;
-		cout << "creating a scondary table\n";
+		cout << "Rotating the table\n";
 		/*for (int r = 0; r < width; r++)
 		{*/
-		int r = 0;
-		int u = 0;
-		while((len*3 - r - 3) != 0)
+
+		while ((len * 3 - r - 3) != 0)
 		{
-			if (u == width)
+			if (c == width)
 			{
-				u = 0;
-				r+=3;
+				c = 0;
+				r += 3;
 			}
 			//cout << r;
-			flip_vec.push_back(table[width - u - 1][len * 3 - r - 3]);
-			flip_vec.push_back(table[width - u - 1][len * 3 - r - 2]);
-			flip_vec.push_back(table[width - u - 1][len * 3 - r - 1]);
-			u++;
+			flip_vec.push_back(table[width - c - 1][len * 3 - r - 3]);
+			flip_vec.push_back(table[width - c - 1][len * 3 - r - 2]);
+			flip_vec.push_back(table[width - c - 1][len * 3 - r - 1]);
+			c++;
 		}
 		//flip_vec.push_back("\n");
 
@@ -469,10 +471,161 @@ RGB::RGB(int option, string file_in, string file_out)
 		}
 
 		break;
+	case 13:
+		//blur
+		cout << "Making table\n";
+		for (int t = 0; t < width; t++)
+		{
+
+			int index = (3 + (t * len / pixel));
+			int size = (((len * RGB_pixel) / (temp_vec.size() - 1)) + (t * len / pixel) + 3);
+			//cout << pixel;
+			 //t * len / pixel is how many pixel vectors per line needed
+				//so the (t * len/pixel) component is for each individual line of len * 3
+			//run the file through a splitter and store into a new vector then push the values of that vector 
+			//into another vector but at length pixels long instead of 5 (pixel)
+			//then move onto the next line of lenght long (the t values)
+
+			for (int i = index; i < size; i++)
+			{
+				new_vec = StringSplitter::split(ppm_vec[i], " ");
+				for (int y = 0; y < new_vec.size() - 1; y++)
+					vec_o.push_back(new_vec[y]);
+				//stream << endl;
+			}
+			//stream << endl;
+			//cout << vec_o.size() << endl;
+			//vec_o.push_back("\n");
+			table.push_back(vec_o);
+			vec_o.clear();
+		}
+		//int t = 0;
+		//int r(0);
+		//do
+		//{
+		while (r < width)
+		{
+			for (int c = 0; c < len * 3; c += 3)
+			{
+				//cout << c << " ";
+				if (c == 0)
+				{
+					table[r][c] = average(table[r][c], table[r][c + 3]);
+					table[r][c + 1] = average(table[r][c + 1], table[r][c + 4]);
+					table[r][c + 2] = average(table[r][c + 1], table[r][c + 5]);
+				}
+				if (c == len * 3 - 3)
+				{
+					table[r][c] = average(table[r][c], table[r][c - 3]);
+					table[r][c + 1] = average(table[r][c + 1], table[r][c - 2]);
+					table[r][c + 2] = average(table[r][c + 1], table[r][c - 1]);
+				}
+				if (c != 0 && c != len * 3 - 3)
+				{
+					table[r][c] = average(table[r][c], table[r][c - 3], table[r][c + 3]);
+					table[r][c + 1] = average(table[r][c + 1], table[r][c - 2], table[r][c + 4]);
+					table[r][c + 2] = average(table[r][c + 2], table[r][c - 1], table[r][c + 5]);
+				}
+				//cout << endl << r << endl;
+				if (r == 0)
+				{
+					table[r][c] = average(table[r][c], table[r + 1][c]);
+					table[r][c + 1] = average(table[r][c + 1], table[r + 1][c + 1]);
+					table[r][c + 2] = average(table[r][c + 2], table[r + 1][c + 2]);
+				}
+				if (r == width - 1)
+				{
+					table[r][c] = average(table[r][c], table[r - 1][c]);
+					table[r][c + 1] = average(table[r][c + 1], table[r - 1][c + 1]);
+					table[r][c + 2] = average(table[r][c + 2], table[r - 1][c + 2]);
+				}
+				if (r != 0 && r != width - 1)
+				{
+					table[r][c] = average(table[r][c], table[r + 1][c], table[r - 1][c]);
+					table[r][c + 1] = average(table[r][c + 1], table[r + 1][c + 1], table[r - 1][c + 1]);
+					table[r][c + 2] = average(table[r][c + 2], table[r + 1][c + 2], table[r - 1][c + 2]);
+				}
+			}
+			r++;
+		}
+		for (auto row : table)
+		{
+			for (auto col : row)
+			{
+				stream << col << " ";
+			}
+			stream << endl;
+		}
+		break;
+	case 14:
+		//pixelate
+		cout << "Making table\n";
+		for (int t = 0; t < width; t++)
+		{
+
+			int index = (3 + (t * len / pixel));
+			int size = (((len * RGB_pixel) / (temp_vec.size() - 1)) + (t * len / pixel) + 3);
+			//cout << pixel;
+			 //t * len / pixel is how many pixel vectors per line needed
+				//so the (t * len/pixel) component is for each individual line of len * 3
+			//run the file through a splitter and store into a new vector then push the values of that vector 
+			//into another vector but at length pixels long instead of 5 (pixel)
+			//then move onto the next line of lenght long (the t values)
+
+			for (int i = index; i < size; i++)
+			{
+				new_vec = StringSplitter::split(ppm_vec[i], " ");
+				for (int y = 0; y < new_vec.size() - 1; y++)
+					vec_o.push_back(new_vec[y]);
+				//stream << endl;
+			}
+			//stream << endl;
+			//cout << vec_o.size() << endl;
+			//vec_o.push_back("\n");
+			table.push_back(vec_o);
+			vec_o.clear();
+		}
+		while (r < width)
+		{
+			for (int i = 0; i < table[1].size(); i += 15)
+			{
+				for (int j = 0; i < 15; i += 3)
+				{
+					for (int v = 0; v < 5; v++)
+					{
+						for (int z = 0; z < 3; z++)
+						{
+							table[r + v][j + z] = table[r][i + z];
+						}
+					}
+					/*table[r][j] = table[r][i];
+					table[r][j + 1] = table[r][i + 1];
+					table[r][j + 2] = table[r][i + 2];
+					table[r + 1][j] = table[r][i];
+					table[r + 2][j] = table[r][i];
+					table[r + 3][j] = table[r][i];
+					table[r + 4][j] = table[r][i];*/
+				}
+			}
+			r += 5;
+		}
+
+		for (auto row : table)
+		{
+			for (auto col : row)
+			{
+				stream << col << " ";
+			}
+			stream << endl;
+		}
+		break;
 
 	}
 
-	}
+
+
+
+
 
 	//stream.close();
 }
@@ -544,6 +697,25 @@ void RGB::setSize(int number)
 	size = number;
 }
 
+string RGB::average(string a, string b)
+{
+	return to_string((stoi(a) + stoi(b)) / 2);
+}
+
+string RGB::average(string a, string b, string c)
+{
+	return to_string((stoi(a) + stoi(b) + stoi(c)) / 3);
+}
+
+string RGB::average(string a, string b, string c, string d)
+{
+	return to_string((stoi(a) + stoi(b) + stoi(c) + stoi(d)) / 4);
+}
+
+string RGB::average(string a, string b, string c, string d, string e)
+{
+	return to_string((stoi(a) + stoi(b) + stoi(c) + stoi(d) + stoi(e)) / 5);
+}
 
 
 // ********* Read file stuff ****** //

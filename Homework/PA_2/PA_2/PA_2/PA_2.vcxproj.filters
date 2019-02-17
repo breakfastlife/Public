@@ -37,5 +37,8 @@
     <None Include="bunny_modified.ppm">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="bunny2.ppm">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

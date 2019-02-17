@@ -126,6 +126,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="bunny.ppm" />
+    <None Include="bunny2.ppm" />
     <None Include="bunny_modified.ppm" />
     <None Include="bunny_out.ppm" />
   </ItemGroup>

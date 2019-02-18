@@ -1,0 +1,35 @@
+﻿1>------ Build started: Project: PA_2, Configuration: Debug Win32 ------
+1>main.cpp
+1>c:\users\owner\documents\spring2019-cs211\spring2019-cs211\homework\pa_2\pa_2\pa_2\rgb.h(78): warning C4018: '<': signed/unsigned mismatch
+1>c:\users\owner\documents\spring2019-cs211\spring2019-cs211\homework\pa_2\pa_2\pa_2\rgb.h(81): warning C4018: '<': signed/unsigned mismatch
+1>c:\users\owner\documents\spring2019-cs211\spring2019-cs211\homework\pa_2\pa_2\pa_2\rgb.h(96): warning C4018: '<': signed/unsigned mismatch
+1>c:\users\owner\documents\spring2019-cs211\spring2019-cs211\homework\pa_2\pa_2\pa_2\rgb.h(99): warning C4018: '<': signed/unsigned mismatch
+1>c:\users\owner\documents\spring2019-cs211\spring2019-cs211\homework\pa_2\pa_2\pa_2\rgb.h(114): warning C4018: '<': signed/unsigned mismatch
+1>c:\users\owner\documents\spring2019-cs211\spring2019-cs211\homework\pa_2\pa_2\pa_2\rgb.h(117): warning C4018: '<': signed/unsigned mismatch
+1>c:\users\owner\documents\spring2019-cs211\spring2019-cs211\homework\pa_2\pa_2\pa_2\rgb.h(132): warning C4018: '<': signed/unsigned mismatch
+1>c:\users\owner\documents\spring2019-cs211\spring2019-cs211\homework\pa_2\pa_2\pa_2\rgb.h(135): warning C4018: '<': signed/unsigned mismatch
+1>c:\users\owner\documents\spring2019-cs211\spring2019-cs211\homework\pa_2\pa_2\pa_2\rgb.h(151): warning C4018: '<': signed/unsigned mismatch
+1>c:\users\owner\documents\spring2019-cs211\spring2019-cs211\homework\pa_2\pa_2\pa_2\rgb.h(154): warning C4018: '<': signed/unsigned mismatch
+1>c:\users\owner\documents\spring2019-cs211\spring2019-cs211\homework\pa_2\pa_2\pa_2\rgb.h(170): warning C4018: '<': signed/unsigned mismatch
+1>c:\users\owner\documents\spring2019-cs211\spring2019-cs211\homework\pa_2\pa_2\pa_2\rgb.h(173): warning C4018: '<': signed/unsigned mismatch
+1>c:\users\owner\documents\spring2019-cs211\spring2019-cs211\homework\pa_2\pa_2\pa_2\rgb.h(189): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+1>c:\users\owner\documents\spring2019-cs211\spring2019-cs211\homework\pa_2\pa_2\pa_2\rgb.h(191): warning C4018: '<': signed/unsigned mismatch
+1>c:\users\owner\documents\spring2019-cs211\spring2019-cs211\homework\pa_2\pa_2\pa_2\rgb.h(194): warning C4018: '<': signed/unsigned mismatch
+1>c:\users\owner\documents\spring2019-cs211\spring2019-cs211\homework\pa_2\pa_2\pa_2\rgb.h(199): warning C4018: '<': signed/unsigned mismatch
+1>c:\users\owner\documents\spring2019-cs211\spring2019-cs211\homework\pa_2\pa_2\pa_2\rgb.h(204): warning C4018: '<': signed/unsigned mismatch
+1>c:\users\owner\documents\spring2019-cs211\spring2019-cs211\homework\pa_2\pa_2\pa_2\rgb.h(234): warning C4018: '<': signed/unsigned mismatch
+1>c:\users\owner\documents\spring2019-cs211\spring2019-cs211\homework\pa_2\pa_2\pa_2\rgb.h(237): warning C4018: '<': signed/unsigned mismatch
+1>c:\users\owner\documents\spring2019-cs211\spring2019-cs211\homework\pa_2\pa_2\pa_2\rgb.h(246): warning C4018: '<': signed/unsigned mismatch
+1>c:\users\owner\documents\spring2019-cs211\spring2019-cs211\homework\pa_2\pa_2\pa_2\rgb.h(255): warning C4018: '<': signed/unsigned mismatch
+1>c:\users\owner\documents\spring2019-cs211\spring2019-cs211\homework\pa_2\pa_2\pa_2\rgb.h(283): warning C4018: '<': signed/unsigned mismatch
+1>c:\users\owner\documents\spring2019-cs211\spring2019-cs211\homework\pa_2\pa_2\pa_2\rgb.h(286): warning C4018: '<': signed/unsigned mismatch
+1>c:\users\owner\documents\spring2019-cs211\spring2019-cs211\homework\pa_2\pa_2\pa_2\rgb.h(331): warning C4018: '<': signed/unsigned mismatch
+1>c:\users\owner\documents\spring2019-cs211\spring2019-cs211\homework\pa_2\pa_2\pa_2\rgb.h(345): warning C4018: '<': signed/unsigned mismatch
+1>c:\users\owner\documents\spring2019-cs211\spring2019-cs211\homework\pa_2\pa_2\pa_2\rgb.h(352): warning C4018: '<': signed/unsigned mismatch
+1>c:\users\owner\documents\spring2019-cs211\spring2019-cs211\homework\pa_2\pa_2\pa_2\rgb.h(378): warning C4018: '<': signed/unsigned mismatch
+1>c:\users\owner\documents\spring2019-cs211\spring2019-cs211\homework\pa_2\pa_2\pa_2\rgb.h(427): warning C4018: '<': signed/unsigned mismatch
+1>c:\users\owner\documents\spring2019-cs211\spring2019-cs211\homework\pa_2\pa_2\pa_2\rgb.h(492): warning C4018: '<': signed/unsigned mismatch
+1>c:\users\owner\documents\spring2019-cs211\spring2019-cs211\homework\pa_2\pa_2\pa_2\main.cpp(19): warning C4101: 'len': unreferenced local variable
+1>PA_2.vcxproj -> C:\Users\Owner\Documents\Spring2019-CS211\Spring2019-CS211\Homework\PA_2\PA_2\Debug\PA_2.exe
+1>Done building project "PA_2.vcxproj".
+========== Build: 1 succeeded, 0 failed, 0 up-to-date, 0 skipped ==========

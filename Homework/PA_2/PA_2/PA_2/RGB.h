@@ -499,10 +499,6 @@ RGB::RGB(int option, string file_in, string file_out)
 			table.push_back(vec_o);
 			vec_o.clear();
 		}
-		//int t = 0;
-		//int r(0);
-		//do
-		//{
 		while (r < width)
 		{
 			for (int c = 0; c < len * 3; c += 3)
@@ -560,6 +556,7 @@ RGB::RGB(int option, string file_in, string file_out)
 	case 14:
 		//pixelate
 		cout << "Making table\n";
+		
 		for (int t = 0; t < width; t++)
 		{
 
@@ -585,19 +582,19 @@ RGB::RGB(int option, string file_in, string file_out)
 			table.push_back(vec_o);
 			vec_o.clear();
 		}
-		while (r < width)
+		
+		table_flip = table;
+		while (r < width) //
 		{
-			for (int i = 0; i < table[1].size(); i += 15)
+			for (int i = 0; i < table[1].size(); i += 3) //pixel to copy, changes by 15 to signifiy the 5 pixels 
 			{
-				for (int j = 0; i < 15; i += 3)
+				for (int v = 0; v < 5; v++) //to change rows by 5
 				{
-					for (int v = 0; v < 5; v++)
+					for (int z = 0; z < 3; z++) //indivicual pixel values
 					{
-						for (int z = 0; z < 3; z++)
-						{
-							table[r + v][j + z] = table[r][i + z];
-						}
+						table[r + v][i + z] = table_flip[r][i + z];
 					}
+				}
 					/*table[r][j] = table[r][i];
 					table[r][j + 1] = table[r][i + 1];
 					table[r][j + 2] = table[r][i + 2];
@@ -605,7 +602,7 @@ RGB::RGB(int option, string file_in, string file_out)
 					table[r + 2][j] = table[r][i];
 					table[r + 3][j] = table[r][i];
 					table[r + 4][j] = table[r][i];*/
-				}
+				
 			}
 			r += 5;
 		}

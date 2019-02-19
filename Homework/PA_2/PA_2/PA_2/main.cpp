@@ -14,47 +14,30 @@ using namespace std;
 
 int main()
 {
-	vector<string> ppm_vec = readFile("bunny.ppm");
-	vector<string> new_vec, vec_o, temp_vec;
-	int len;
-	ofstream stream("bunny_modified.ppm");
-	for (int i = 0; i < 3; i++)
+	int user_input(0);
+	string input_file, output_file;
+	do
 	{
-		vec_o = StringSplitter::split(ppm_vec[i], " ");
-		for (auto row : vec_o)
-			stream << row << " ";
-	}
-	/*temp_vec = StringSplitter::split(ppm_vec[1], " ");
-	len = stoi(temp_vec[0]);
-	temp_vec = StringSplitter::split(ppm_vec[3], " ");
-	cout << len << endl;
-	cout << temp_vec.size() << endl;
-	len = ((len * 3) / (temp_vec.size()-1));
-	cout << len;
-	*/
-	
-
-	/*for (int i = 3; i < ppm_vec.size(); i++)
-	{
-		new_vec = StringSplitter::split(ppm_vec[i], " ");
-		for (int i = 1; i < new_vec.size(); i += 3)
+		cout << "PPM Image Manipulator\n";
+		cout << "Enter input file: ";
+		cin >> input_file;
+		cout << endl << "Enter output file: ";
+		cin >> output_file;
+		cout << "Image Effects Menu\n";
+		cout << "1. Remove Red\t 2.Remove Green\t 3. Remove Blue\t 4. Negate Red\n";
+		cout << "5. Negate Green\t 6. Negate Blue\t 7. Add Random Noise\t 8. High Contrast\n";
+		cout << "9. Grayscale\t 10. Flip Horizontal\t 11. Flip Vertical\t 12. Rotate 90\t";
+		cout << "13. Blur\t 14. Pixelate\t 15. Exit Program\n\n";
+		cout << "Selection: ";
+		cin >> user_input;
+		if (user_input != 15)
 		{
-			new_vec[i] = "0";
+			RGB bun(user_input, input_file, output_file);
+			cout << "Effect applied\n";
 		}
-
-		for (auto row : new_vec)
-		{
-			stream << row << " ";
-			cout << row << " ";
-		}
-		cout << endl;
-		stream << endl;
-	}
-	stream.close();*/
-
-	RGB bun(14, "bunny2.ppm", "bunny_out.ppm");
-
-	cout << "done..." << endl;
+		if (user_input == 15)
+			cout << "Exiting Program\n\n";
+	} while (user_input != 15);
 	//system("pause");
 	return 0;
 }

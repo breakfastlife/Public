@@ -1,5 +1,8 @@
 #include "Decoder.h"
+#include <iostream>
+#include <vector>
 
+using namespace std;
 
 
 Decoder::Decoder(string file_in)

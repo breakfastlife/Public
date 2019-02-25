@@ -64,6 +64,8 @@ Decoder::Decoder(string file_in)
 	vector<int> current_pixel{};
 	vector<vector<int>> current_row{};
 
+	cout << "decoding...\n";
+
 	int row_counter = 0;
 	for (int i = 3; i < data.size(); i++)
 	{

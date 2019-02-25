@@ -18,9 +18,6 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Decoder.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stringSplitter.h">
@@ -32,6 +29,9 @@
     <ClInclude Include="Decoder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Encoder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="blocks.ppm">
@@ -40,5 +40,25 @@
     <None Include="tinypix.ppm">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="bunny_out.ppm">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="encoded.ppm">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="encoded1.ppm">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="decoded.ppm">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Object Include="Debug\Decoder.obj">
+      <Filter>Resource Files</Filter>
+    </Object>
+    <Object Include="Debug\main.obj">
+      <Filter>Resource Files</Filter>
+    </Object>
   </ItemGroup>
 </Project>

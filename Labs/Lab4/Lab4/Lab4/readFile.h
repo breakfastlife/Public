@@ -7,9 +7,9 @@
 #include <sstream>
 #include "StringSplitter.h"
 
-vector<string> readFile(ifstream& some_file);
-vector<string> readFile(ifstream&& some_file);
-vector<string> readFile(string file_name);
+//vector<string> readFile(ifstream& some_file);
+//vector<string> readFile(ifstream&& some_file);
+//vector<string> readFile(string file_name);
 
 
 vector<string> readFile(ifstream& some_file)

@@ -115,17 +115,25 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Decoder.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Decoder.h" />
+    <ClInclude Include="Encoder.h" />
     <ClInclude Include="readFile.h" />
     <ClInclude Include="stringSplitter.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="blocks.ppm" />
+    <None Include="bunny_out.ppm" />
+    <None Include="decoded.ppm" />
+    <None Include="encoded.ppm" />
+    <None Include="encoded1.ppm" />
     <None Include="tinypix.ppm" />
+  </ItemGroup>
+  <ItemGroup>
+    <Object Include="Debug\Decoder.obj" />
+    <Object Include="Debug\main.obj" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -99,6 +99,9 @@ Decoder::Decoder(string file_in)
 			}
 		}
 	}
+	if (cin.peek() == '\n')
+		cin.ignore();
+
 	string file_out_input;
 	cout << "Enter File output location: ";
 	cin >> file_out_input;

@@ -2,13 +2,13 @@
 
 
 //
-Customer::Customer(int arrive, string name): line_name(name), arrival_time(arrive), service_time(0), departure_time(0)
+Customer::Customer(int arrive, string name): line_name(name), arrival_time(arrive), service_time(0), departure_time(0), customer_id(0), id_counter(0)
 {
 }
 //
-//Customer::Customer(string name): line_name(name), arrival_time(0), service_time(0)
-//{
-//}
+Customer::Customer(int arrive): arrival_time(arrive), service_time(0)
+{
+}
 
 Customer::Customer()
 {
@@ -23,7 +23,7 @@ Customer::~Customer()
 
 int Customer::getTotalWaitTime()
 {
-	return arrival_time + service_time;
+	return departure_time - arrival_time;
 }
 
 int Customer::getCustomerID() const

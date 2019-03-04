@@ -10,18 +10,19 @@ class CheckoutLine
 private:
 	string line_name;
 	int tick_count;
-	queue<Customer*> line;
-	vector<Customer*> served_customers;
+	queue<Customer> line;
+	vector<Customer> served_customers;
 public:
 	CheckoutLine();
 	CheckoutLine(string name);
 	~CheckoutLine();
 	string getLineName();
+	void setLineName(string name);
 	int getCustomerServiceTime();
 	int getCustomerDepartureTime();
 	bool isEmpty();
-	void addCustomers(Customer* some_customer);
-	vector<Customer*>& getServicedCustomers();
+	void addCustomers(Customer some_customer);
+	vector<Customer> getServicedCustomers();
 	void setCustomerDepartureTime(int DT);
 	void setServicedCustomers();
 	void tick();

@@ -16,7 +16,7 @@ private:
 	string line_name;
 public:
 	Customer(int arrive, string name);
-	Customer(string name);
+	Customer(int arrive);
 	Customer();
 	~Customer();
 	int getTotalWaitTime();

@@ -2,11 +2,11 @@
 #include <fstream>
 using namespace std;
 
-CheckoutLine::CheckoutLine() : line_name(""), tick_count(0)
+CheckoutLine::CheckoutLine() : line_name(" "), tick_count(0)
 {
 }
 
-CheckoutLine::CheckoutLine(string name) : line_name(name), tick_count(0)
+CheckoutLine::CheckoutLine(string name) : line_name(name), tick_count(0), line()
 {
 	cout << "CheckoutLine: " << name << " successfully created\n";
 }
@@ -20,38 +20,42 @@ string CheckoutLine::getLineName()
 {
 	return line_name;
 }
+void CheckoutLine::setLineName(string name)
+{
+	line_name = name;
+	line.front().setLineName(name);
+}
 bool CheckoutLine::isEmpty()
 {
 	return line.size() == 0;
 }
-void CheckoutLine::addCustomers(Customer* some_customer)
+void CheckoutLine::addCustomers(Customer some_customer)
 {
 	line.push(some_customer);
-	cout << line.size() << endl;
-	cout << "Customer has been added\n";
+	//cout << line.size() << endl;
+	//cout << "Customer has been added to: " << line_name << "\n";
 }
-vector<Customer*>& CheckoutLine::getServicedCustomers()
+vector<Customer> CheckoutLine::getServicedCustomers()
 {
 	return served_customers;
 }
 void CheckoutLine::setCustomerDepartureTime(int DT)
 {
-	line.front()->setDepartureTime(DT);
+	line.front().setDepartureTime(DT);
 }
 int CheckoutLine::getCustomerDepartureTime()
 {
-	return line.front()->getDeparture_Time();
+	return line.front().getDeparture_Time();
 }
 void CheckoutLine::setServicedCustomers()
 {
-	Customer* temp1 = line.front();
+	Customer temp1 = line.front();
 	served_customers.push_back(temp1);
 	line.pop();
-	cout << "Line size now: " << line.size() << endl;
 }
 int CheckoutLine::getCustomerServiceTime()
 {
-	return line.front()->getService_Time();
+	return line.front().getService_Time();
 }
 void CheckoutLine::tick()
 {
@@ -64,11 +68,11 @@ int CheckoutLine::checkSize()
 
 void CheckoutLine::getServed_Customers(ofstream& file)
 {
-	for (int t = 0; t < served_customers.size() - 1; t++)
+	for (auto t: served_customers)
 	{
 		//cout << served_customers.size();
-		file << served_customers[t]->getCustomerID() << " " << served_customers[t]->getArrivalTime() << " " << served_customers[t]->getService_Time();
-		file << " " << served_customers[t]->getDeparture_Time() << " " << served_customers[t]->getTotalWaitTime() << " ";
-		file << served_customers[t]->getLineName() << endl;
+		file << t.getCustomerID() << "," << t.getArrivalTime() << "," << t.getService_Time();
+		file << "," << t.getDeparture_Time() << "," << t.getTotalWaitTime() << ",";
+		file << t.getLineName() << endl;
 	}
 }

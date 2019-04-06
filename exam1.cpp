@@ -2,6 +2,7 @@
 #include <stack>
 #include <string>
 #include <iostream>
+#include "StringSplitter.h"
 
 using namespace std;
 
@@ -232,9 +233,37 @@ vector<int> merseSorted(vector<int> first, vector<int> second) // problem 9 ////
 	return first;
 }
 
-void isBalanced(string insert)  //problem 10 ////////
+bool isBalanced(string insert)  //problem 10 ////////
 {
+	stack<char> yo_mama{};
+	char current;
 
+	//vector<string> v_split = StringSplitter::split(insert, " ");
+	for (auto i : insert)
+	{
+		cout << i << " ";
+		if ((i == '{') || (i == '}') || (i == '(') || (i == ')') || (i == '[') || (i == ']'))
+		{
+			yo_mama.push(i);
+		}
+	}
+	cout << endl;
+	while (!yo_mama.empty())
+	{
+		current = yo_mama.top();
+		yo_mama.pop();
+		cout << current;
+		if (!yo_mama.empty())
+		{
+			if (current == '{' && (yo_mama.top() == ']' || yo_mama.top() == ')')) return false;
+			if (current == '}' && (yo_mama.top() == '[' || yo_mama.top() == '(')) return false;
+			if (current == '(' && (yo_mama.top() == ']' || yo_mama.top() == '}')) return false;
+			if (current == ')' && (yo_mama.top() == '[' || yo_mama.top() == '{')) return false;
+			if (current == '[' && (yo_mama.top() == '}' || yo_mama.top() == ')')) return false;
+			if (current == ']' && (yo_mama.top() == '{' || yo_mama.top() == '(')) return false;
+		}
+	}
+	return true;
 }
 
 int main()
@@ -388,6 +417,11 @@ int main()
 	{
 		cout << i << " ";
 	}
+
+	cout << isBalanced("(abbb[kkl])") << endl;
+	cout << isBalanced("(abbb)") << endl;
+	cout << isBalanced("(abbb[kkl)]") << endl;
+
 
 	return 0;
 }

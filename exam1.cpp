@@ -175,12 +175,25 @@ vector<int> PostbstToVector(TreeNode* node) //preorder
 	return postorder;
 }
 
-bool isAvl(TreeNode* node) //Problem 7 //////////////////////////
+//Problem 7 //////////////////////////
+int AvlHeight(TreeNode* node)
+{
+	if (node == nullptr)
+		return -1;
+	int LH = AvlHeight(node->left);
+	int RH = AvlHeight(node->right);
+	if (LH < RH)
+		LH = RH;
+	return LH + 1;
+}
+
+
+bool isAvl(TreeNode* node) 
 {
 	if (node == nullptr)
 		return true;
-	int LH = isAvl(node->left);
-	int RH = isAvl(node->right);
+	int LH = AvlHeight(node->left);
+	int RH = AvlHeight(node->right);
 	if((LH == RH +1) || (LH == RH) || (LH == RH - 1))
 		return true;
 	else return false;
@@ -346,7 +359,18 @@ int main()
 
 	//Problem 7
 
+	TreeNode* Treeroottest = new TreeNode{ 4 };  //Problem 6//////////////////////////////
+	Treeroottest->left = new TreeNode{ 2 };
+	Treeroottest->right = new TreeNode{ 6 };
+	Treeroottest->left->left = new TreeNode{ 1 };
+	Treeroottest->left->right = new TreeNode{ 3 };
+	Treeroottest->right->left = new TreeNode{ 5 };
+	Treeroottest->right->right = new TreeNode{ 7 };
+	Treeroottest->right->right->right = new TreeNode{ 8 };
+	Treeroottest->right->right->right->right = new TreeNode{ 17 };
+
 	cout << boolalpha << isAvl(Treeroot) << endl;
+	cout << boolalpha << isAvl(Treeroottest) << endl;
 
 	//Problem 8
 

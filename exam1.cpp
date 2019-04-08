@@ -13,14 +13,16 @@ int findNthSmallest(vector<int> numbers, int n) //problem 1 ////////////////
 		cout << "Not a valid input, too small or too much\n";
 		exit(1);
 	}
-	int min, next = 0;
+	int min, next;
+	next = numbers[0];
 	min = numbers[0];
 	for (auto i : numbers)
 	{
-		if (min < i)
+		if (i < min)
 			min = i;
 	}
-	for (int i = 0; i < n - 1; i++)
+	//cout << min << " ";
+	for (int p = 0; p < n - 2; p++)
 	{
 		for (auto j : numbers)
 		{
@@ -30,13 +32,19 @@ int findNthSmallest(vector<int> numbers, int n) //problem 1 ////////////////
 				break;
 			}
 		}
+		//cout << next << " ";
 		for (auto k : numbers)
 		{
 			if (k > min && k < next)
+			{
 				next = k;
-			min = next;
+				//cout << next << " ";
+			}
 		}
+		min = next;
 	}
+	//cout << endl;
+	return min;
 }
 
 
@@ -127,8 +135,7 @@ bool searchTree(TreeNode* node, int key)
 {
 	if (node == nullptr) return false;
 	if (node->value == key) return true;
-	if (searchTree(node->left,key) || searchTree(node->right,key)) return true;
-	return false;
+	 return (searchTree(node->left, key) || searchTree(node->right, key));
 }
  
 
@@ -235,24 +242,27 @@ vector<int> merseSorted(vector<int> first, vector<int> second) // problem 9 ////
 
 bool isBalanced(string insert)  //problem 10 ////////
 {
+	int counter = 0;
 	stack<char> yo_mama{};
 	char current;
 
 	//vector<string> v_split = StringSplitter::split(insert, " ");
 	for (auto i : insert)
 	{
-		cout << i << " ";
+		//cout << i << " ";
 		if ((i == '{') || (i == '}') || (i == '(') || (i == ')') || (i == '[') || (i == ']'))
 		{
 			yo_mama.push(i);
 		}
 	}
-	cout << endl;
+	//cout << endl;
 	while (!yo_mama.empty())
 	{
 		current = yo_mama.top();
+		if ((current == '{' || current == '(' || current == '[') && (yo_mama.size() == 1) && (counter % 2 == 0)) return false;
 		yo_mama.pop();
-		cout << current;
+		counter++;
+		//cout << current;
 		if (!yo_mama.empty())
 		{
 			if (current == '{' && (yo_mama.top() == ']' || yo_mama.top() == ')')) return false;
@@ -263,21 +273,22 @@ bool isBalanced(string insert)  //problem 10 ////////
 			if (current == ']' && (yo_mama.top() == '{' || yo_mama.top() == '(')) return false;
 		}
 	}
-	return true;
+	return yo_mama.empty();
 }
 
 int main()
 {
 	//prblem 1 //////////////////////
-	vector<int> num = { 11,3,4,76,1048,74,2754,885,85 };
-	int a = findNthSmallest(num, 3);
+	vector<int> nums = { 11, 3, 4, 76, 1048, 74, 2, 754, 885, 85, 5, 6 };
+	int a = findNthSmallest(nums, 3);
+	cout << "problem 1\n";
 	cout << a << " ";
-	a = findNthSmallest(num, 2);
+	a = findNthSmallest(nums, 2);
 	cout << a << " ";
 	//a = findNthSmallest(num, 13);  //uncomment to get the exit error
 	//cout << a << " ";
-	a = findNthSmallest(num, 5);
-	cout << a << " ";
+	a = findNthSmallest(nums, 5);
+	cout << a << " \n";
 
 
 
@@ -323,8 +334,8 @@ int main()
 
 
 	//problem 4 stuff //////////////////////////////
-	vector<int> r;
-	stack<int> p;
+	vector<int> r,t;
+	stack<int> p, g;
 	p.push(25);
 	p.push(75);
 	p.push(6);
@@ -332,12 +343,21 @@ int main()
 	p.push(120);
 	p.push(100);
 	p.push(5);
+	g.push(25);
+	g.push(74);
+	g.push(101010);
+	g.push(10);
+	g.push(0);
+	g.push(10);
+	g.push(59);
 
 	r = sortStack(p);
 	for (auto i : r)
-	{
 		cout << i << " ";
-	}
+	cout << endl;
+	t = sortStack(g);
+	for (auto i : t)
+		cout << i << " ";
 	cout << endl;
 
 	TreeNode* Tree = new TreeNode{ 50 };  //problem 5 ////////////////
@@ -402,8 +422,9 @@ int main()
 	cout << boolalpha << isAvl(Treeroottest) << endl;
 
 	//Problem 8
-
+	cout << "Problem 8 \n";
 	cout << getHeight(Treeroot) << endl;
+	cout << getHeight(Treeroottest) << endl;
 
 
 	//problem 9
@@ -418,9 +439,15 @@ int main()
 		cout << i << " ";
 	}
 
-	cout << isBalanced("(abbb[kkl])") << endl;
-	cout << isBalanced("(abbb)") << endl;
-	cout << isBalanced("(abbb[kkl)]") << endl;
+
+	//problem 10
+	cout << endl;
+	cout << "Should return True: " << isBalanced("(abbb[kkl])") <<  endl;
+	cout << "Should return True: " << isBalanced("(abbb)") << endl;
+	cout << "Should return False: " << isBalanced("(abbb[kkl)]") << endl;
+	cout << "Should return False: " << isBalanced("(abbb[kkl]") << endl;
+	cout << "Should return True: " << isBalanced("(abbb[]{[()]})") << endl;
+	cout << "Should return False: " << isBalanced("()[{]") << endl;
 
 
 	return 0;
